@@ -1,0 +1,33 @@
+alias mpv {
+  ;  change the path to your mpv folder
+  set %nptxt $read(C:\Program Files\mpv\np.txt)
+  set %mediatitle $gettok(%nptxt,1,124)
+  set %filesize $int($calc($gettok(%nptxt,2,124) / 1048576)) $+ MB
+  set %percentpos $int($gettok(%nptxt,3,124))
+  set %length $int($gettok(%nptxt,4,124))
+  set %timepos $int($gettok(%nptxt,5,124))
+  set %lengthtimepos $duration(%timepos,3) $+ $chr(47) $+ $duration(%length,3)
+  set %mpvbar $int($calc( %percentpos / 10))
+  if ( %mpvbar isnum 10) { //set %vcent 1,1[13,13_________6,13»1,1] | goto done }
+  elseif ( %mpvbar isnum 0) { //set %vcent 1,1[13,6»6,6_________1,1] | goto done }
+  else {
+    set %vcent $replace(1.2.3.4.5.6.7.8.9,%mpvbar,c $+ %mpvbar)
+    set %vcent $replace(%vcent,0,$chr(95),1,$chr(95),2,$chr(95),3,$chr(95),4,$chr(95),5,$chr(95),6,$chr(95),7,$chr(95),8,$chr(95),9,$chr(95),a,$chr(95))
+    set %col 6,13»6,6
+    set %vcent $chr(3) $+ $chr(49) $+ $chr(44) $+ $chr(49) $+ $chr(91) $+ $chr(3) $+ $chr(49) $+ $chr(51) $+ $chr(44) $+ $chr(49) $+ $chr(51) $+ $replace($remove(%vcent,.),c,%col) $+ 1,1 $+ $chr(93)
+  }
+  :done
+  set %mpv  13[6Watching13]13[6MPV13] « $+ 6 %mediatitle 13• %vcent $+  13• %lengthtimepos 13•6 %filesize 13 $+ $chr(187)
+}
+menu channel {
+  MPV Now Playing:{
+    mpv
+    Describe $chan %mpv
+  }
+}
+menu query {
+  MPV Now Playing:{
+    mpv
+    msg $$1 %mpv
+  }
+}
