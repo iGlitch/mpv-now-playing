@@ -7,6 +7,7 @@ Put the .lua script in your mpv scripts directory.
 Copy paste the .msl script to your IRC Client.
 
 ### Usage
+Pause the video, or press 'n' on your keyboard while playing to activate the dumper.
 Right click the channel and click MPV Now Playing in the menu.
 
 ### Output
